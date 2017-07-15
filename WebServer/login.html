@@ -1,0 +1,28 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<form action="/login" method="post">
+    用户名:<input type="text" name="username">
+    密码:<input type="password" name="password">
+    go:<textarea name="msg" cols=500 rows=50>
+package  main
+
+import (
+	"fmt"
+	"time"
+)
+func main() {
+	for i:=0;i<5;i++ {
+		time.Sleep(time.Millisecond * 1000)
+		fmt.Println("from hello")
+	}
+}
+
+
+</textarea>
+    <input type="submit" value="登陆">
+</form>
+</body>
+</html>
