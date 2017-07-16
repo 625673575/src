@@ -8,8 +8,6 @@ import (
 
 func main() {
 
-	fmt.Println(ar,a,b,c)
-	fmt.Println(a==&ar,&b==&ar,&c==&ar)
 	appID:="da54f706a6ea4f3c900018bacd48282f"
 	appCertificate:="0d14d6bc92984055b8d281e185894676"
 	channelName := "liu"
