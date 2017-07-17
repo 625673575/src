@@ -16,7 +16,7 @@ const (
 type Echo int
 func (t *Echo) Hi(args string, reply *string) error {
 	*reply = "echo:" + args
-	fmt.Println(*reply)
+	fmt.Println("server"+*reply)
 	return nil
 }
 func Start(protocal string, port string) {
@@ -26,6 +26,7 @@ func Start(protocal string, port string) {
 	if e != nil {
 		log.Panic("listen error: ", e)
 	}
+
 	http.Serve(l, nil)
 }
 func main() {

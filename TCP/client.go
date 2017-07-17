@@ -8,12 +8,8 @@ import (
 
 func main() {
 	var buf [512]byte
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s host:port ", os.Args[0])
-		os.Exit(1)
-	}
-	service := os.Args[1]
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
+
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", ":5000")
 	checkErr(err)
 	conn, err := net.DialTCP("tcp", nil, tcpAddr)
 	defer conn.Close()

@@ -7,7 +7,10 @@ import (
 	"os"
 )
 
+var ConnMap map[string]*net.Conn
+
 func main() {
+	ConnMap = make(map[string] *net.Conn)
 	service := ":5000"
 	tcpAddr, err := net.ResolveTCPAddr("tcp4", service)
 	checkErr(err)
@@ -15,13 +18,26 @@ func main() {
 	checkErr(err)
 	for {
 		conn, err := listener.Accept()
+		if conn==nil{
+			continue
+		}
+		addr:=conn.RemoteAddr().String()
+		if addr=="" {
+			continue
+		}
+		ConnMap[conn.RemoteAddr().String()] = &conn
 		if err != nil {
 			continue
 		}
 		go handleClient(conn)
 	}
 }
-
+func boradcastMessage(message string) {
+	b := []byte(message)
+	for _, conn := range ConnMap {
+		(*conn).Write(b)
+	}
+}
 func checkErr(err error) {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())
@@ -32,16 +48,23 @@ func checkErr(err error) {
 func handleClient(conn net.Conn) {
 	defer conn.Close()
 	var buf [512]byte
-	for {
-		n, err := conn.Read(buf[0:])
-		if err != nil {
-			return
+	go func() {
+		for {
+			n, err := conn.Read(buf[0:])
+			if err != nil {
+				return
+			}
+			rAddr := conn.RemoteAddr()
+
+			fmt.Println("Receive from client", rAddr.String(), string(buf[0:n]))
+			boradcastMessage(rAddr.String() + ":" + string(buf[0:n]))
 		}
-		rAddr := conn.RemoteAddr()
-		fmt.Println("Receive from client", rAddr.String(), string(buf[0:n]))
-		_, err2 := conn.Write([]byte("Welcome client!"))
-		if err2 != nil {
-			return
+	}()
+	for {
+		var input string
+		fmt.Scanln(&input)
+		if input != "" {
+			conn.Write([]byte(input))
 		}
 	}
 }

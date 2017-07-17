@@ -3,6 +3,7 @@ package main
 import (
 	"net/rpc"
 	"time"
+	"fmt"
 )
 
 var client *rpc.Client
@@ -12,7 +13,7 @@ func callServer(i int) {
 	var args = "hello rpc"
 	var reply string
 	err = client.Call("Echo.Hi", args, &reply)
-
+	fmt.Print(reply)
 	if err != nil {
 		panic(err)
 	}
