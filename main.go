@@ -53,14 +53,14 @@ var (
 func main() {
 	channw()
 }
-func mut(){
+func mut() {
 	wg.Add(2)
 	go incCount()
 	go incCount()
 	wg.Wait()
 	fmt.Println(count)
 }
-func chann(){
+func chann() {
 	ch := make(chan int)
 	go func() {
 		var sum int = 0
@@ -72,20 +72,35 @@ func chann(){
 
 	fmt.Println(<-ch)
 }
-func channw(){
+
+//two rely on the channel one's value,so wait until channel one finish the execution,even the one channel start after one second sleep
+//channel could auto wait the other channel that need to be finished
+//if the channel has been <- channelName ,then you can't use select or execute <- channelName again
+func channw() {
 	one := make(chan int)
 	two := make(chan int)
+	three := make(chan int)
 	go func() {
-		v:=<-one
-		two<-v
+		v := <-one //这会导致直接等待one执行后才会调用select ，导致 three 也执行完了 ，然后 输出的结果就是1000
+		two <- v   //只要two一旦被赋值 就会立马执行最后面的输出语句
+		select {
+		case x0 := <-one:
+			two <- x0
+		case x1 := <-three://会走到这里是因为three 还没有被取出过值，而one前面已经被取出来
+			two <- x1
+		}
 
 	}()
-	time.Sleep(time.Second)
 	go func() {
-		one<-100
+		time.Sleep(time.Second * 5)
+		one <- 5000
 	}()
-	fmt.Println(<-two)
-
+	go func() {
+		time.Sleep(time.Second * 2)
+		three <- 2000
+	}()
+	fmt.Println("got two", <-two) // 输出5000，是第一个channel 赋值传过来的数值
+	fmt.Println("got two", <-two) //输出2000，是第二个select执行第二地赋值传过来的数值
 }
 func incCount() {
 	defer wg.Done()
