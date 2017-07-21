@@ -18,6 +18,14 @@ func callServer(i int) {
 		panic(err)
 	}
 }
+func computeOnServer(i int){
+	var reply float64
+	err=client.Call("Echo.Add",[]float64{2.5,3.4},&reply)
+	fmt.Print(reply)
+	if err != nil {
+		panic(err)
+	}
+}
 func diag(){
 	client, err = rpc.DialHTTP("tcp", "127.0.0.1:8086")
 	if err != nil {
@@ -27,7 +35,7 @@ func diag(){
 func main(){
 	diag()
 	for i := 0; i < 5; i++ {
-		callServer(i)
+		computeOnServer(i)
 		time.Sleep(time.Second*1)
 	}
 }

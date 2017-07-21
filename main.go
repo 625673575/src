@@ -68,9 +68,13 @@ func chann() {
 			sum += i
 		}
 		ch <- sum
+		time.Sleep(time.Second)
+		fmt.Println("Im before the <-ch")
 	}()
 
 	fmt.Println(<-ch)
+	fmt.Println("Im after the <-ch")
+	time.Sleep(time.Second*2)
 }
 
 //two rely on the channel one's value,so wait until channel one finish the execution,even the one channel start after one second sleep
@@ -88,6 +92,7 @@ func channw() {
 			two <- x0
 		case x1 := <-three://会走到这里是因为three 还没有被取出过值，而one前面已经被取出来
 			two <- x1
+			two<-10000
 		}
 
 	}()
@@ -101,6 +106,8 @@ func channw() {
 	}()
 	fmt.Println("got two", <-two) // 输出5000，是第一个channel 赋值传过来的数值
 	fmt.Println("got two", <-two) //输出2000，是第二个select执行第二地赋值传过来的数值
+	//fmt.Println ("got two",<-two)//err,all groutines are asleep,因为two的channel只被赋值过两次，第二次已经被取出来了
+	//如果上面的two再进行一次channel的赋值 ，则上一条语句不会出错
 }
 func incCount() {
 	defer wg.Done()

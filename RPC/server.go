@@ -12,11 +12,17 @@ import (
 const (
 	Address = "127.0.0.1:8086"
 )
+type Double float64
 
-type Echo int
+type Echo float64
 func (t *Echo) Hi(args string, reply *string) error {
 	*reply = "echo:" + args
 	fmt.Println("server"+*reply)
+	return nil
+}
+func  (t *Echo) Add(args []float64, reply *float64) error {
+	*reply = args[0]+args[1]
+	fmt.Println(len(args),*reply)
 	return nil
 }
 func Start(protocal string, port string) {
