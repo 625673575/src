@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+//	"strings"
 )
 
 var ConnMap map[string]*net.Conn
@@ -26,6 +27,7 @@ func main() {
 			continue
 		}
 		ConnMap[conn.RemoteAddr().String()] = &conn
+		fmt.Println("Receive connect request from ",conn.RemoteAddr().String())
 		if err != nil {
 			continue
 		}
@@ -55,9 +57,14 @@ func handleClient(conn net.Conn) {
 				return
 			}
 			rAddr := conn.RemoteAddr()
-
-			fmt.Println("Receive from client", rAddr.String(), string(buf[0:n]))
+content:=string(buf[0:n])
+			if  len(content)>6 && content[0:6]=="voice:"{
+				fmt.Println("voice message ", rAddr.String(),content )
+				boradcastMessage(content)
+			}else{
+			fmt.Println("text message ", rAddr.String(),content )
 			boradcastMessage(rAddr.String() + ":" + string(buf[0:n]))
+			}
 		}
 	}()
 	for {

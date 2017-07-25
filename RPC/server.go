@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 	"fmt"
+	"Tensor"
 )
 
 const (
@@ -22,6 +23,12 @@ func (t *Echo) Hi(args string, reply *string) error {
 }
 func  (t *Echo) Add(args []float64, reply *float64) error {
 	*reply = args[0]+args[1]
+	fmt.Println(len(args),*reply)
+	return nil
+}
+func  (t *Echo) TensorAdd(args []tf.Tensor, reply *tf.Tensor) error {
+	args[0].Add(&args[1])
+	*reply =args[0]
 	fmt.Println(len(args),*reply)
 	return nil
 }
