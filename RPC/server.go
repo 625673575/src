@@ -1,66 +1,42 @@
 package main
 
 import (
-	"net/rpc"
-	"log"
 	"net"
-	"net/http"
-	"time"
+	"log"
+	"google.golang.org/grpc/reflection"
+	"golang.org/x/net/context"
 	"fmt"
-	"Tensor"
+	"RPC/remote"
+)
+import (
+	"google.golang.org/grpc"
 )
 
-const (
-	Address = "127.0.0.1:8086"
-)
-type Double float64
+const port = ":50001"
 
-type Echo float64
-func (t *Echo) Hi(args string, reply *string) error {
-	*reply = "echo:" + args
-	fmt.Println("server"+*reply)
-	return nil
-}
-func  (t *Echo) Add(args []float64, reply *float64) error {
-	*reply = args[0]+args[1]
-	fmt.Println(len(args),*reply)
-	return nil
-}
-func  (t *Echo) TensorAdd(args []tf.Tensor, reply *tf.Tensor) error {
-	args[0].Add(&args[1])
-	*reply =args[0]
-	fmt.Println(len(args),*reply)
-	return nil
-}
-func Start(protocal string, port string) {
-	rpc.Register(new(Echo))
-	rpc.HandleHTTP()
-	l, e := net.Listen(protocal, port)
-	if e != nil {
-		log.Panic("listen error: ", e)
-	}
+type server struct{}
 
-	http.Serve(l, nil)
+func (s *server) ExecCmd(ctx context.Context, in *remote.CmdRequest) (*remote.LogReply, error) {
+	log := new(remote.Log)
+	log.LogType = remote.LOG_TYPE_Debug
+	log.Content = "第一个log"
+	fmt.Println(log)
+	return &remote.LogReply{Logs: []*remote.Log{log}}, nil
+}
+func (s *server) CaptureScreen(ctx context.Context, in *remote.ScreenArea) (*remote.ImageData, error) {
+	return &remote.ImageData{Data: []byte{12, 43, 234, 43}}, nil
 }
 func main() {
-	go Start("tcp", ":8086")
-	//time.Sleep(time.Second * 5)
-	//for i := 0; i < 5; i++ {
-	//	call(i)
-	//	time.Sleep(time.Second*1)
-	//}
-	time.Sleep(time.Hour)
-}
-func call(i int) {
-	client, err := rpc.DialHTTP("tcp", Address)
+	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		println(i, err.Error())
+		log.Fatalf("failed to listen: %v", err)
 	}
-	var args = "hello rpc"
-	var reply string
-	err = client.Call("Echo.Hi", args, &reply)
-
-	if err != nil {
-		panic(err)
+	s := grpc.NewServer()
+	ser := new(server)
+	remote.RegisterRemoteServiceServer(s, ser)
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
