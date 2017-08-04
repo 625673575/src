@@ -5,8 +5,6 @@ import (
 	"reflect"
 	"unsafe"
 	"math"
-	"fmt"
-	"encoding/gob"
 )
 
 func Benchmark_BubbleSort(b *testing.B) {
