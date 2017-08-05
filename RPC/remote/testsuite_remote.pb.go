@@ -9,10 +9,16 @@ It is generated from these files:
 
 It has these top-level messages:
 	Log
-	ScreenArea
+	Nil
+	CaptureParams
 	CmdRequest
+	MouseClickRequest
+	MouseMoveRequest
+	KeyTapRequest
+	KeyListTapRequest
 	LogReply
 	ImageData
+	MousePosition
 */
 package remote
 
@@ -60,6 +66,39 @@ func (x LOG_TYPE) String() string {
 }
 func (LOG_TYPE) EnumDescriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
+type MouseButtons int32
+
+const (
+	MouseButtons_None     MouseButtons = 0
+	MouseButtons_Left     MouseButtons = 1048576
+	MouseButtons_Right    MouseButtons = 2097152
+	MouseButtons_Middle   MouseButtons = 4194304
+	MouseButtons_XButton1 MouseButtons = 8388608
+	MouseButtons_XButton2 MouseButtons = 16777216
+)
+
+var MouseButtons_name = map[int32]string{
+	0:        "None",
+	1048576:  "Left",
+	2097152:  "Right",
+	4194304:  "Middle",
+	8388608:  "XButton1",
+	16777216: "XButton2",
+}
+var MouseButtons_value = map[string]int32{
+	"None":     0,
+	"Left":     1048576,
+	"Right":    2097152,
+	"Middle":   4194304,
+	"XButton1": 8388608,
+	"XButton2": 16777216,
+}
+
+func (x MouseButtons) String() string {
+	return proto.EnumName(MouseButtons_name, int32(x))
+}
+func (MouseButtons) EnumDescriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+
 type Log struct {
 	LogType LOG_TYPE `protobuf:"varint,1,opt,name=LogType,enum=remote.LOG_TYPE" json:"LogType,omitempty"`
 	Content string   `protobuf:"bytes,2,opt,name=Content" json:"Content,omitempty"`
@@ -84,50 +123,66 @@ func (m *Log) GetContent() string {
 	return ""
 }
 
-type ScreenArea struct {
+type Nil struct {
+}
+
+func (m *Nil) Reset()                    { *m = Nil{} }
+func (m *Nil) String() string            { return proto.CompactTextString(m) }
+func (*Nil) ProtoMessage()               {}
+func (*Nil) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+
+type CaptureParams struct {
 	FullScreen bool  `protobuf:"varint,1,opt,name=FullScreen" json:"FullScreen,omitempty"`
 	X          int32 `protobuf:"varint,2,opt,name=x" json:"x,omitempty"`
 	Y          int32 `protobuf:"varint,3,opt,name=y" json:"y,omitempty"`
 	W          int32 `protobuf:"varint,4,opt,name=w" json:"w,omitempty"`
 	H          int32 `protobuf:"varint,5,opt,name=h" json:"h,omitempty"`
+	Quality    int32 `protobuf:"varint,6,opt,name=Quality" json:"Quality,omitempty"`
 }
 
-func (m *ScreenArea) Reset()                    { *m = ScreenArea{} }
-func (m *ScreenArea) String() string            { return proto.CompactTextString(m) }
-func (*ScreenArea) ProtoMessage()               {}
-func (*ScreenArea) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{1} }
+func (m *CaptureParams) Reset()                    { *m = CaptureParams{} }
+func (m *CaptureParams) String() string            { return proto.CompactTextString(m) }
+func (*CaptureParams) ProtoMessage()               {}
+func (*CaptureParams) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
 
-func (m *ScreenArea) GetFullScreen() bool {
+func (m *CaptureParams) GetFullScreen() bool {
 	if m != nil {
 		return m.FullScreen
 	}
 	return false
 }
 
-func (m *ScreenArea) GetX() int32 {
+func (m *CaptureParams) GetX() int32 {
 	if m != nil {
 		return m.X
 	}
 	return 0
 }
 
-func (m *ScreenArea) GetY() int32 {
+func (m *CaptureParams) GetY() int32 {
 	if m != nil {
 		return m.Y
 	}
 	return 0
 }
 
-func (m *ScreenArea) GetW() int32 {
+func (m *CaptureParams) GetW() int32 {
 	if m != nil {
 		return m.W
 	}
 	return 0
 }
 
-func (m *ScreenArea) GetH() int32 {
+func (m *CaptureParams) GetH() int32 {
 	if m != nil {
 		return m.H
+	}
+	return 0
+}
+
+func (m *CaptureParams) GetQuality() int32 {
+	if m != nil {
+		return m.Quality
 	}
 	return 0
 }
@@ -141,7 +196,7 @@ type CmdRequest struct {
 func (m *CmdRequest) Reset()                    { *m = CmdRequest{} }
 func (m *CmdRequest) String() string            { return proto.CompactTextString(m) }
 func (*CmdRequest) ProtoMessage()               {}
-func (*CmdRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{2} }
+func (*CmdRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{3} }
 
 func (m *CmdRequest) GetCmd() string {
 	if m != nil {
@@ -157,6 +212,126 @@ func (m *CmdRequest) GetArgs() []string {
 	return nil
 }
 
+type MouseClickRequest struct {
+	X           int32        `protobuf:"varint,1,opt,name=x" json:"x,omitempty"`
+	Y           int32        `protobuf:"varint,2,opt,name=y" json:"y,omitempty"`
+	DoubleClick bool         `protobuf:"varint,3,opt,name=DoubleClick" json:"DoubleClick,omitempty"`
+	Button      MouseButtons `protobuf:"varint,4,opt,name=Button,enum=remote.MouseButtons" json:"Button,omitempty"`
+}
+
+func (m *MouseClickRequest) Reset()                    { *m = MouseClickRequest{} }
+func (m *MouseClickRequest) String() string            { return proto.CompactTextString(m) }
+func (*MouseClickRequest) ProtoMessage()               {}
+func (*MouseClickRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{4} }
+
+func (m *MouseClickRequest) GetX() int32 {
+	if m != nil {
+		return m.X
+	}
+	return 0
+}
+
+func (m *MouseClickRequest) GetY() int32 {
+	if m != nil {
+		return m.Y
+	}
+	return 0
+}
+
+func (m *MouseClickRequest) GetDoubleClick() bool {
+	if m != nil {
+		return m.DoubleClick
+	}
+	return false
+}
+
+func (m *MouseClickRequest) GetButton() MouseButtons {
+	if m != nil {
+		return m.Button
+	}
+	return MouseButtons_None
+}
+
+type MouseMoveRequest struct {
+	X    int32   `protobuf:"varint,1,opt,name=x" json:"x,omitempty"`
+	Y    int32   `protobuf:"varint,2,opt,name=y" json:"y,omitempty"`
+	Low  float32 `protobuf:"fixed32,3,opt,name=Low" json:"Low,omitempty"`
+	High float32 `protobuf:"fixed32,4,opt,name=High" json:"High,omitempty"`
+}
+
+func (m *MouseMoveRequest) Reset()                    { *m = MouseMoveRequest{} }
+func (m *MouseMoveRequest) String() string            { return proto.CompactTextString(m) }
+func (*MouseMoveRequest) ProtoMessage()               {}
+func (*MouseMoveRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{5} }
+
+func (m *MouseMoveRequest) GetX() int32 {
+	if m != nil {
+		return m.X
+	}
+	return 0
+}
+
+func (m *MouseMoveRequest) GetY() int32 {
+	if m != nil {
+		return m.Y
+	}
+	return 0
+}
+
+func (m *MouseMoveRequest) GetLow() float32 {
+	if m != nil {
+		return m.Low
+	}
+	return 0
+}
+
+func (m *MouseMoveRequest) GetHigh() float32 {
+	if m != nil {
+		return m.High
+	}
+	return 0
+}
+
+type KeyTapRequest struct {
+	KeyCode []string `protobuf:"bytes,1,rep,name=KeyCode" json:"KeyCode,omitempty"`
+	Delay   float32  `protobuf:"fixed32,2,opt,name=Delay" json:"Delay,omitempty"`
+}
+
+func (m *KeyTapRequest) Reset()                    { *m = KeyTapRequest{} }
+func (m *KeyTapRequest) String() string            { return proto.CompactTextString(m) }
+func (*KeyTapRequest) ProtoMessage()               {}
+func (*KeyTapRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{6} }
+
+func (m *KeyTapRequest) GetKeyCode() []string {
+	if m != nil {
+		return m.KeyCode
+	}
+	return nil
+}
+
+func (m *KeyTapRequest) GetDelay() float32 {
+	if m != nil {
+		return m.Delay
+	}
+	return 0
+}
+
+type KeyListTapRequest struct {
+	Keys []*KeyTapRequest `protobuf:"bytes,1,rep,name=Keys" json:"Keys,omitempty"`
+}
+
+func (m *KeyListTapRequest) Reset()                    { *m = KeyListTapRequest{} }
+func (m *KeyListTapRequest) String() string            { return proto.CompactTextString(m) }
+func (*KeyListTapRequest) ProtoMessage()               {}
+func (*KeyListTapRequest) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{7} }
+
+func (m *KeyListTapRequest) GetKeys() []*KeyTapRequest {
+	if m != nil {
+		return m.Keys
+	}
+	return nil
+}
+
 // Reply
 type LogReply struct {
 	Logs []*Log `protobuf:"bytes,1,rep,name=Logs" json:"Logs,omitempty"`
@@ -165,7 +340,7 @@ type LogReply struct {
 func (m *LogReply) Reset()                    { *m = LogReply{} }
 func (m *LogReply) String() string            { return proto.CompactTextString(m) }
 func (*LogReply) ProtoMessage()               {}
-func (*LogReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{3} }
+func (*LogReply) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{8} }
 
 func (m *LogReply) GetLogs() []*Log {
 	if m != nil {
@@ -175,13 +350,21 @@ func (m *LogReply) GetLogs() []*Log {
 }
 
 type ImageData struct {
-	Data []byte `protobuf:"bytes,1,opt,name=Data,proto3" json:"Data,omitempty"`
+	TimeStamp int64  `protobuf:"varint,1,opt,name=TimeStamp" json:"TimeStamp,omitempty"`
+	Data      []byte `protobuf:"bytes,2,opt,name=Data,proto3" json:"Data,omitempty"`
 }
 
 func (m *ImageData) Reset()                    { *m = ImageData{} }
 func (m *ImageData) String() string            { return proto.CompactTextString(m) }
 func (*ImageData) ProtoMessage()               {}
-func (*ImageData) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{4} }
+func (*ImageData) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{9} }
+
+func (m *ImageData) GetTimeStamp() int64 {
+	if m != nil {
+		return m.TimeStamp
+	}
+	return 0
+}
 
 func (m *ImageData) GetData() []byte {
 	if m != nil {
@@ -190,13 +373,44 @@ func (m *ImageData) GetData() []byte {
 	return nil
 }
 
+type MousePosition struct {
+	X int32 `protobuf:"varint,1,opt,name=x" json:"x,omitempty"`
+	Y int32 `protobuf:"varint,2,opt,name=y" json:"y,omitempty"`
+}
+
+func (m *MousePosition) Reset()                    { *m = MousePosition{} }
+func (m *MousePosition) String() string            { return proto.CompactTextString(m) }
+func (*MousePosition) ProtoMessage()               {}
+func (*MousePosition) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{10} }
+
+func (m *MousePosition) GetX() int32 {
+	if m != nil {
+		return m.X
+	}
+	return 0
+}
+
+func (m *MousePosition) GetY() int32 {
+	if m != nil {
+		return m.Y
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Log)(nil), "remote.Log")
-	proto.RegisterType((*ScreenArea)(nil), "remote.ScreenArea")
+	proto.RegisterType((*Nil)(nil), "remote.Nil")
+	proto.RegisterType((*CaptureParams)(nil), "remote.CaptureParams")
 	proto.RegisterType((*CmdRequest)(nil), "remote.CmdRequest")
+	proto.RegisterType((*MouseClickRequest)(nil), "remote.MouseClickRequest")
+	proto.RegisterType((*MouseMoveRequest)(nil), "remote.MouseMoveRequest")
+	proto.RegisterType((*KeyTapRequest)(nil), "remote.KeyTapRequest")
+	proto.RegisterType((*KeyListTapRequest)(nil), "remote.KeyListTapRequest")
 	proto.RegisterType((*LogReply)(nil), "remote.LogReply")
 	proto.RegisterType((*ImageData)(nil), "remote.ImageData")
+	proto.RegisterType((*MousePosition)(nil), "remote.MousePosition")
 	proto.RegisterEnum("remote.LOG_TYPE", LOG_TYPE_name, LOG_TYPE_value)
+	proto.RegisterEnum("remote.MouseButtons", MouseButtons_name, MouseButtons_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -211,7 +425,11 @@ const _ = grpc.SupportPackageIsVersion4
 
 type RemoteServiceClient interface {
 	ExecCmd(ctx context.Context, in *CmdRequest, opts ...grpc.CallOption) (*LogReply, error)
-	CaptureScreen(ctx context.Context, in *ScreenArea, opts ...grpc.CallOption) (*ImageData, error)
+	CaptureScreen(ctx context.Context, in *CaptureParams, opts ...grpc.CallOption) (*ImageData, error)
+	MouseClick(ctx context.Context, in *MouseClickRequest, opts ...grpc.CallOption) (*Log, error)
+	KeyTap(ctx context.Context, in *KeyTapRequest, opts ...grpc.CallOption) (*Log, error)
+	KeyListTap(ctx context.Context, in *KeyListTapRequest, opts ...grpc.CallOption) (*Log, error)
+	GetMousePosition(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*MousePosition, error)
 }
 
 type remoteServiceClient struct {
@@ -231,9 +449,45 @@ func (c *remoteServiceClient) ExecCmd(ctx context.Context, in *CmdRequest, opts 
 	return out, nil
 }
 
-func (c *remoteServiceClient) CaptureScreen(ctx context.Context, in *ScreenArea, opts ...grpc.CallOption) (*ImageData, error) {
+func (c *remoteServiceClient) CaptureScreen(ctx context.Context, in *CaptureParams, opts ...grpc.CallOption) (*ImageData, error) {
 	out := new(ImageData)
 	err := grpc.Invoke(ctx, "/remote.RemoteService/CaptureScreen", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *remoteServiceClient) MouseClick(ctx context.Context, in *MouseClickRequest, opts ...grpc.CallOption) (*Log, error) {
+	out := new(Log)
+	err := grpc.Invoke(ctx, "/remote.RemoteService/MouseClick", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *remoteServiceClient) KeyTap(ctx context.Context, in *KeyTapRequest, opts ...grpc.CallOption) (*Log, error) {
+	out := new(Log)
+	err := grpc.Invoke(ctx, "/remote.RemoteService/KeyTap", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *remoteServiceClient) KeyListTap(ctx context.Context, in *KeyListTapRequest, opts ...grpc.CallOption) (*Log, error) {
+	out := new(Log)
+	err := grpc.Invoke(ctx, "/remote.RemoteService/KeyListTap", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *remoteServiceClient) GetMousePosition(ctx context.Context, in *Nil, opts ...grpc.CallOption) (*MousePosition, error) {
+	out := new(MousePosition)
+	err := grpc.Invoke(ctx, "/remote.RemoteService/GetMousePosition", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -244,7 +498,11 @@ func (c *remoteServiceClient) CaptureScreen(ctx context.Context, in *ScreenArea,
 
 type RemoteServiceServer interface {
 	ExecCmd(context.Context, *CmdRequest) (*LogReply, error)
-	CaptureScreen(context.Context, *ScreenArea) (*ImageData, error)
+	CaptureScreen(context.Context, *CaptureParams) (*ImageData, error)
+	MouseClick(context.Context, *MouseClickRequest) (*Log, error)
+	KeyTap(context.Context, *KeyTapRequest) (*Log, error)
+	KeyListTap(context.Context, *KeyListTapRequest) (*Log, error)
+	GetMousePosition(context.Context, *Nil) (*MousePosition, error)
 }
 
 func RegisterRemoteServiceServer(s *grpc.Server, srv RemoteServiceServer) {
@@ -270,7 +528,7 @@ func _RemoteService_ExecCmd_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _RemoteService_CaptureScreen_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ScreenArea)
+	in := new(CaptureParams)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -282,7 +540,79 @@ func _RemoteService_CaptureScreen_Handler(srv interface{}, ctx context.Context, 
 		FullMethod: "/remote.RemoteService/CaptureScreen",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RemoteServiceServer).CaptureScreen(ctx, req.(*ScreenArea))
+		return srv.(RemoteServiceServer).CaptureScreen(ctx, req.(*CaptureParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RemoteService_MouseClick_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MouseClickRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RemoteServiceServer).MouseClick(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/remote.RemoteService/MouseClick",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RemoteServiceServer).MouseClick(ctx, req.(*MouseClickRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RemoteService_KeyTap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KeyTapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RemoteServiceServer).KeyTap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/remote.RemoteService/KeyTap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RemoteServiceServer).KeyTap(ctx, req.(*KeyTapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RemoteService_KeyListTap_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(KeyListTapRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RemoteServiceServer).KeyListTap(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/remote.RemoteService/KeyListTap",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RemoteServiceServer).KeyListTap(ctx, req.(*KeyListTapRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RemoteService_GetMousePosition_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Nil)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RemoteServiceServer).GetMousePosition(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/remote.RemoteService/GetMousePosition",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RemoteServiceServer).GetMousePosition(ctx, req.(*Nil))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -299,6 +629,22 @@ var _RemoteService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "CaptureScreen",
 			Handler:    _RemoteService_CaptureScreen_Handler,
 		},
+		{
+			MethodName: "MouseClick",
+			Handler:    _RemoteService_MouseClick_Handler,
+		},
+		{
+			MethodName: "KeyTap",
+			Handler:    _RemoteService_KeyTap_Handler,
+		},
+		{
+			MethodName: "KeyListTap",
+			Handler:    _RemoteService_KeyListTap_Handler,
+		},
+		{
+			MethodName: "GetMousePosition",
+			Handler:    _RemoteService_GetMousePosition_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "testsuite_remote.proto",
@@ -307,28 +653,48 @@ var _RemoteService_serviceDesc = grpc.ServiceDesc{
 func init() { proto.RegisterFile("testsuite_remote.proto", fileDescriptor0) }
 
 var fileDescriptor0 = []byte{
-	// 355 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x4c, 0x91, 0xc1, 0xcf, 0x9a, 0x40,
-	0x10, 0xc5, 0x45, 0xf4, 0x43, 0x46, 0x6d, 0xe8, 0x1e, 0x9a, 0x8d, 0x87, 0x4a, 0x38, 0x11, 0x9b,
-	0x9a, 0x94, 0x5e, 0x7a, 0x35, 0x68, 0x9b, 0xa6, 0x24, 0x6d, 0x56, 0x93, 0xa6, 0x27, 0x83, 0x3a,
-	0x59, 0x4d, 0x84, 0xa5, 0xcb, 0x52, 0x25, 0xe9, 0x1f, 0xff, 0x65, 0x17, 0x51, 0x4f, 0xcc, 0xef,
-	0x31, 0xbc, 0x79, 0x33, 0xc0, 0x3b, 0x85, 0xa5, 0x2a, 0xab, 0x93, 0xc2, 0xad, 0xc4, 0x4c, 0x28,
-	0x9c, 0x17, 0x52, 0x28, 0x41, 0x5e, 0x1a, 0x0a, 0x7e, 0x80, 0x9d, 0x08, 0x4e, 0x66, 0xe0, 0x24,
-	0x82, 0x6f, 0xea, 0x02, 0xa9, 0xe5, 0x5b, 0xe1, 0x9b, 0xc8, 0x9b, 0xdf, 0xda, 0x93, 0x9f, 0xdf,
-	0xb6, 0x9b, 0x3f, 0xbf, 0x56, 0xac, 0x6d, 0x20, 0x14, 0x9c, 0x58, 0xe4, 0x0a, 0x73, 0x45, 0xbb,
-	0xbe, 0x15, 0xba, 0xac, 0xc5, 0xe0, 0x00, 0xb0, 0xde, 0x4b, 0xc4, 0x7c, 0x21, 0x31, 0x25, 0xef,
-	0x01, 0xbe, 0x56, 0xe7, 0x73, 0xa3, 0x18, 0xdb, 0x01, 0x7b, 0x52, 0xc8, 0x08, 0xac, 0xab, 0x71,
-	0xe8, 0x33, 0xeb, 0xaa, 0xa9, 0xa6, 0x76, 0x43, 0xb5, 0xa6, 0x0b, 0xed, 0x35, 0x74, 0xd1, 0x74,
-	0xa4, 0xfd, 0x86, 0x8e, 0x41, 0x04, 0x10, 0x67, 0x07, 0x86, 0x7f, 0x2b, 0x2c, 0x15, 0xf1, 0xc0,
-	0x8e, 0xb3, 0x83, 0xb1, 0x77, 0x99, 0x2e, 0x09, 0x81, 0xde, 0x42, 0xf2, 0x92, 0x76, 0x7d, 0x3b,
-	0x74, 0x99, 0xa9, 0x83, 0x0f, 0x30, 0x48, 0x04, 0x67, 0x58, 0x9c, 0x6b, 0x32, 0x85, 0x5e, 0x22,
-	0x78, 0x49, 0x2d, 0xdf, 0x0e, 0x87, 0xd1, 0xf0, 0xbe, 0xa8, 0xe0, 0xcc, 0xbc, 0x08, 0xa6, 0xe0,
-	0x7e, 0xcf, 0x52, 0x8e, 0xcb, 0x54, 0xa5, 0xda, 0x4d, 0x3f, 0xcd, 0x80, 0x11, 0x33, 0xf5, 0xec,
-	0x23, 0x0c, 0xda, 0xb3, 0x10, 0x17, 0xfa, 0x4b, 0xdc, 0x55, 0xdc, 0xeb, 0x90, 0x21, 0x38, 0xbf,
-	0x53, 0x99, 0x9f, 0x72, 0xee, 0x59, 0x5a, 0x5f, 0x49, 0x29, 0xa4, 0xd7, 0x8d, 0xfe, 0xc3, 0x98,
-	0x99, 0x19, 0x6b, 0x94, 0xff, 0x4e, 0x7b, 0x24, 0x9f, 0xc0, 0x59, 0x5d, 0x71, 0x6f, 0xc2, 0xb6,
-	0xe3, 0x1f, 0x2b, 0x4d, 0xbc, 0xe7, 0x48, 0x3a, 0x72, 0xd0, 0x21, 0x5f, 0x60, 0x1c, 0xa7, 0x85,
-	0xaa, 0x24, 0xde, 0xae, 0x77, 0xff, 0xf0, 0x71, 0xf1, 0xc9, 0xdb, 0x56, 0xbb, 0xc7, 0x0f, 0x3a,
-	0xbb, 0x17, 0xf3, 0xc3, 0x3f, 0xbf, 0x06, 0x00, 0x00, 0xff, 0xff, 0x58, 0xf2, 0x08, 0x0e, 0x0a,
-	0x02, 0x00, 0x00,
+	// 674 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x54, 0x5d, 0x6f, 0xd3, 0x4a,
+	0x10, 0x8d, 0x9d, 0xef, 0x49, 0xd2, 0xeb, 0xae, 0xda, 0x2b, 0xdf, 0xe8, 0xea, 0xde, 0x68, 0x9f,
+	0x4a, 0x0b, 0x95, 0x1a, 0xa4, 0x0a, 0x09, 0xf1, 0x99, 0x96, 0x82, 0x92, 0x96, 0xb2, 0x8d, 0x04,
+	0x3c, 0x55, 0x6e, 0x32, 0x38, 0x2b, 0x6c, 0x6f, 0xb0, 0xd7, 0x6d, 0xfd, 0x44, 0xf9, 0x99, 0xfc,
+	0x1b, 0xb4, 0xeb, 0x6e, 0xe2, 0x14, 0x84, 0x78, 0x9b, 0x73, 0x3c, 0xb3, 0x33, 0x73, 0x66, 0xc6,
+	0xf0, 0xb7, 0xc4, 0x44, 0x26, 0x29, 0x97, 0x78, 0x1e, 0x63, 0x28, 0x24, 0xee, 0xce, 0x63, 0x21,
+	0x05, 0xa9, 0xe5, 0x88, 0x0e, 0xa1, 0x3c, 0x12, 0x3e, 0xd9, 0x86, 0xfa, 0x48, 0xf8, 0xe3, 0x6c,
+	0x8e, 0xae, 0xd5, 0xb3, 0xb6, 0xd6, 0xfa, 0xce, 0xee, 0xad, 0xfb, 0xe8, 0xed, 0xd1, 0xf9, 0xf8,
+	0xe3, 0xe9, 0x21, 0x33, 0x0e, 0xc4, 0x85, 0xfa, 0x40, 0x44, 0x12, 0x23, 0xe9, 0xda, 0x3d, 0x6b,
+	0xab, 0xc9, 0x0c, 0xa4, 0x55, 0x28, 0x9f, 0xf0, 0x80, 0x7e, 0xb3, 0xa0, 0x33, 0xf0, 0xe6, 0x32,
+	0x8d, 0xf1, 0xd4, 0x8b, 0xbd, 0x30, 0x21, 0xff, 0x01, 0xbc, 0x4a, 0x83, 0xe0, 0x6c, 0x12, 0x23,
+	0x46, 0x3a, 0x43, 0x83, 0x15, 0x18, 0xd2, 0x06, 0xeb, 0x5a, 0x3f, 0x56, 0x65, 0xd6, 0xb5, 0x42,
+	0x99, 0x5b, 0xce, 0x51, 0xa6, 0xd0, 0x95, 0x5b, 0xc9, 0xd1, 0x95, 0x42, 0x33, 0xb7, 0x9a, 0xa3,
+	0x99, 0x2a, 0xe5, 0x5d, 0xea, 0x05, 0x5c, 0x66, 0x6e, 0x4d, 0x73, 0x06, 0xd2, 0x3e, 0xc0, 0x20,
+	0x9c, 0x32, 0xfc, 0x92, 0x62, 0x22, 0x89, 0x03, 0xe5, 0x41, 0x38, 0xd5, 0x89, 0x9b, 0x4c, 0x99,
+	0x84, 0x40, 0xe5, 0x45, 0xec, 0x27, 0xae, 0xdd, 0x2b, 0x6f, 0x35, 0x99, 0xb6, 0xe9, 0x57, 0x58,
+	0x3f, 0x16, 0x69, 0x82, 0x83, 0x80, 0x4f, 0x3e, 0x9b, 0x50, 0x5d, 0x9a, 0xb5, 0x52, 0x9a, 0x6d,
+	0x4a, 0xeb, 0x41, 0xeb, 0x40, 0xa4, 0x17, 0x41, 0x1e, 0xa1, 0x4b, 0x6e, 0xb0, 0x22, 0x45, 0xee,
+	0x43, 0xed, 0x65, 0x2a, 0xa5, 0x88, 0x74, 0x07, 0x6b, 0xfd, 0x0d, 0x23, 0xab, 0x4e, 0x94, 0x7f,
+	0x4a, 0xd8, 0xad, 0x0f, 0x1d, 0x83, 0xa3, 0xf9, 0x63, 0x71, 0x89, 0x7f, 0x92, 0xdf, 0x51, 0xc3,
+	0xbb, 0xd2, 0x79, 0x6d, 0xa6, 0x4c, 0xd5, 0xd6, 0x6b, 0xee, 0xcf, 0x74, 0x36, 0x9b, 0x69, 0x9b,
+	0x3e, 0x83, 0xce, 0x10, 0xb3, 0xb1, 0x37, 0x37, 0x4f, 0xba, 0x50, 0x1f, 0x62, 0x36, 0x10, 0x53,
+	0x35, 0x6c, 0xd5, 0xbe, 0x81, 0x64, 0x03, 0xaa, 0x07, 0x18, 0x78, 0x79, 0x0a, 0x9b, 0xe5, 0x80,
+	0x3e, 0x85, 0xf5, 0x21, 0x66, 0x23, 0x9e, 0xc8, 0xc2, 0x23, 0xf7, 0xa0, 0x32, 0xc4, 0x2c, 0xd1,
+	0x2f, 0xb4, 0xfa, 0x9b, 0xa6, 0xaf, 0x95, 0x4c, 0x4c, 0xbb, 0xd0, 0x1d, 0x68, 0x8c, 0x84, 0xcf,
+	0x70, 0x1e, 0x64, 0xe4, 0x7f, 0xa8, 0x8c, 0x84, 0x6f, 0xc2, 0x5a, 0x8b, 0x2d, 0x13, 0x3e, 0xd3,
+	0x1f, 0xe8, 0x13, 0x68, 0xbe, 0x09, 0x3d, 0x1f, 0x0f, 0x3c, 0xe9, 0x91, 0x7f, 0xa1, 0x39, 0xe6,
+	0x21, 0x9e, 0x49, 0x2f, 0x9c, 0x6b, 0x11, 0xca, 0x6c, 0x49, 0xa8, 0x66, 0x95, 0x97, 0x2e, 0xb6,
+	0xcd, 0xb4, 0x4d, 0x77, 0xa0, 0xa3, 0x25, 0x3c, 0x15, 0x09, 0x97, 0x5c, 0x44, 0xbf, 0xd3, 0x6f,
+	0xfb, 0x01, 0x34, 0xcc, 0x7a, 0x93, 0xa6, 0x6a, 0xfd, 0x22, 0xf5, 0x9d, 0x12, 0x69, 0x41, 0xfd,
+	0xbd, 0x17, 0x47, 0x3c, 0xf2, 0x1d, 0x4b, 0xf1, 0x87, 0x71, 0x2c, 0x62, 0xc7, 0xde, 0x9e, 0x40,
+	0xbb, 0x38, 0x36, 0xd2, 0x80, 0xca, 0x89, 0x88, 0xd0, 0x29, 0x11, 0x80, 0xca, 0x08, 0x3f, 0x49,
+	0xe7, 0xe6, 0xe6, 0x39, 0x69, 0x43, 0x95, 0x71, 0x7f, 0xa6, 0xc0, 0x8d, 0x45, 0x3a, 0x50, 0x3b,
+	0xe6, 0xd3, 0x69, 0x80, 0x0a, 0xda, 0xe4, 0x2f, 0x68, 0x7c, 0xc8, 0xc3, 0xf7, 0x14, 0x51, 0x29,
+	0x10, 0x7d, 0x45, 0x34, 0xfa, 0xdf, 0x6d, 0xe8, 0x30, 0x2d, 0xca, 0x19, 0xc6, 0x97, 0x7c, 0x82,
+	0x64, 0x0f, 0xea, 0x87, 0xd7, 0x38, 0xd1, 0x5b, 0x6b, 0xf4, 0x5a, 0xee, 0x76, 0xd7, 0x29, 0x6a,
+	0xa8, 0x34, 0xa6, 0x25, 0xf2, 0x78, 0x71, 0x80, 0xb7, 0x07, 0xb6, 0x98, 0xcf, 0xca, 0x5d, 0x76,
+	0xd7, 0x0d, 0xbd, 0x90, 0x9c, 0x96, 0xc8, 0x3e, 0xc0, 0xf2, 0x0c, 0xc8, 0x3f, 0x2b, 0x1b, 0x5b,
+	0x3c, 0x8d, 0x6e, 0x71, 0x7a, 0xb4, 0x44, 0x76, 0xa1, 0x96, 0x4f, 0x9f, 0xfc, 0x7a, 0x1b, 0xee,
+	0xfa, 0xef, 0x03, 0x2c, 0xd7, 0x6a, 0x99, 0xe7, 0xa7, 0x55, 0xbb, 0x1b, 0xf7, 0x08, 0x9c, 0x23,
+	0x94, 0xab, 0x53, 0x5e, 0xb8, 0x9c, 0xf0, 0xa0, 0xbb, 0xb9, 0x52, 0xb2, 0xf1, 0xa1, 0xa5, 0x8b,
+	0x9a, 0xfe, 0xf7, 0x3d, 0xfc, 0x11, 0x00, 0x00, 0xff, 0xff, 0x4d, 0xee, 0x0d, 0x06, 0x15, 0x05,
+	0x00, 0x00,
 }
