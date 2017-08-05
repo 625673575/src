@@ -35,6 +35,7 @@ func ToSlice(arr interface{}) []interface{} {
 	}
 	return ret
 }
+
 func (t *Tensor) Size() int {
 	count := int(1)
 	for _, v := range t.shape {
@@ -191,9 +192,15 @@ func (t *Tensor) Add(arg *Tensor) {
 func (t *Tensor) Sub(arg *Tensor) {
 	t.GoCompute(arg,subAtom)
 }
+func (t *Tensor) Multipy(arg *Tensor){
+	t.GoCompute(arg,mulAtom);
+}
 func addAtom(arg0 *float64, arg1 *float64) {
 	*arg0 = *arg0 + *arg1
 }
 func subAtom(arg0 *float64, arg1 *float64) {
 	*arg0 = *arg0 - *arg1
+}
+func mulAtom(arg0 *float64, arg1 *float64){
+	*arg0=*arg0*(*arg1)
 }
