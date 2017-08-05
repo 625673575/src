@@ -25,6 +25,18 @@ func mut() {
 	wg.Wait()
 	fmt.Println(count)
 }
+func incCount() {
+	defer wg.Done()
+	for i := 0; i < 4; i++ {
+		mutex.Lock()
+		value := count
+		runtime.Gosched()
+		value++
+		count = value
+		mutex.Unlock()
+	}
+}
+
 func chann() {
 	ch := make(chan int)
 	go func() {
@@ -73,15 +85,4 @@ func channw() {
 	fmt.Println("got two", <-two) //输出2000，是第二个select执行第二地赋值传过来的数值
 	//fmt.Println ("got two",<-two)//err,all groutines are asleep,因为two的channel只被赋值过两次，第二次已经被取出来了
 	//如果上面的two再进行一次channel的赋值 ，则上一条语句不会出错
-}
-func incCount() {
-	defer wg.Done()
-	for i := 0; i < 4; i++ {
-		mutex.Lock()
-		value := count
-		runtime.Gosched()
-		value++
-		count = value
-		mutex.Unlock()
-	}
 }

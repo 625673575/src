@@ -74,7 +74,7 @@ func main() {
 	createTask()(1)
 	createTask()(2)
 	createTask()(3)
-	timeout := 8 * time.Second
+	timeout := 2 * time.Second
 	r := New(timeout)
 	r.Add(createTask(), createTask(), createTask())
 	if err := r.Start(); err != nil {
