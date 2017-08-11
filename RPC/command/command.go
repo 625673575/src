@@ -14,6 +14,7 @@ func addCommand(cmd GrpcCommandStruct ){
 func init() {
 	Commands = make(CommandMap)
 	addCommand(GrpcCommandStruct{Name: "getScreenSize", Method: getScreenSize})
+	addCommand(GrpcCommandStruct{Name: "renameFile", Method: renameFile})
 }
 
 
