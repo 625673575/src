@@ -8,8 +8,12 @@ type GrpcCommandStruct struct {
 type CommandMap map[string]func(args []string) (string)
 
 var Commands CommandMap
+
+func init(){
+	Commands =make(CommandMap)
+}
 func addCommand(cmd GrpcCommandStruct ){
-	Commands = CommandMap{cmd.Name: cmd.Method}
+	Commands[cmd.Name]=cmd.Method
 }
 func init() {
 	Commands = make(CommandMap)

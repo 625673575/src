@@ -23,6 +23,7 @@ import (
 )
 
 const port = ":50051"
+const MAX_TEXT_LEN=2097152
 
 type server struct{}
 
@@ -128,6 +129,11 @@ func (s *server) ReadText(ctx context.Context, in *remote.CmdRequest) (*remote.L
 	var err error
 	log := new(remote.Log)
 	log.LogType = remote.LOG_TYPE_Debug
+	if file.GetFileSize(in.Cmd)>MAX_TEXT_LEN{
+		log.LogType=remote.LOG_TYPE_Error
+		log.Content=fmt.Sprintf("%s文件体积大于%dkb",in.Cmd,MAX_TEXT_LEN/1024)
+		return log,nil
+	}
 	log.Content,err =file.ReadString(in.Cmd)
 	if err!=nil{
 		log.LogType=remote.LOG_TYPE_Error

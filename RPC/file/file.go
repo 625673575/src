@@ -39,7 +39,13 @@ func Rename(oldPath string,newPath string)bool{
 func ReadBytes(path string)([]byte,error){
 return	ioutil.ReadFile(path)
 }
-
+func GetFileSize(path string)int64{
+	f,err:=os.Stat(path)
+	if err==nil{
+		return f.Size()
+	}
+	return -1
+}
 func ReadString(path string)(string,error){
 	b,err:=ioutil.ReadFile(path)
 	return string(b),err
