@@ -7,6 +7,8 @@ import (
 	"runtime"
 	"sync"
 	"time"
+	"github.com/sajari/word2vec"
+	"log"
 )
 
 var (
@@ -16,7 +18,23 @@ var (
 )
 
 func main() {
-	channw()
+	c := word2vec.Client{Addr: "localhost:1234"}
+
+	// Create an expression.
+	expr := word2vec.Expr{}
+	expr.Add(1, "PC")
+	//expr.Add(1, "crap")
+	//expr.Add(1, "woman")
+
+	// Find the most similar result by cosine similarity.
+	matches, err := c.CosN(expr, 10)
+	if err != nil {
+		log.Fatalf("error evaluating cosine similarity: %v", err)
+	}else {
+		for i,v:=range matches{
+			fmt.Println(i,v)
+		}
+	}
 }
 func mut() {
 	wg.Add(2)
