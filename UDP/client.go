@@ -7,13 +7,15 @@ import (
 	"os"
 )
 
-func main() {
-	var buf [512]byte
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "Usage: %s host:port ", os.Args[0])
+func checkErr(err error) {
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())
 		os.Exit(1)
 	}
-	service := os.Args[1]
+}
+func main() {
+	var buf [512]byte
+	service := "47.75.241.11:5000"
 	udpAddr, err := net.ResolveUDPAddr("udp4", service)
 	checkErr(err)
 	conn, err := net.DialUDP("udp", nil, udpAddr)
@@ -28,9 +30,3 @@ func main() {
 	os.Exit(0)
 }
 
-func checkErr(err error) {
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Fatal error: %s", err.Error())
-		os.Exit(1)
-	}
-}

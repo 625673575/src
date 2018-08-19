@@ -31,7 +31,7 @@ import math "math"
 
 import (
 	context "golang.org/x/net/context"
-	grpc "google.golang.org/grpc"
+	grpc "google.golang.org/ddz"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -505,7 +505,7 @@ var _ context.Context
 var _ grpc.ClientConn
 
 // This is a compile-time assertion to ensure that this generated file
-// is compatible with the grpc package it is being compiled against.
+// is compatible with the ddz package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
 // Client API for RemoteService service

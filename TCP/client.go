@@ -9,7 +9,7 @@ import (
 func main() {
 	var buf [512]byte
 
-	tcpAddr, err := net.ResolveTCPAddr("tcp4", ":5000")
+	tcpAddr, err := net.ResolveTCPAddr("tcp4", "47.75.241.11:5000")
 	checkErr(err)
 	conn, err := net.DialTCP("tcp", nil, tcpAddr)
 	defer conn.Close()

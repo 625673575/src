@@ -2,14 +2,12 @@ package  main
 
 import (
 	"fmt"
-"reflect"
+	"time"
 )
-const a="fs"
 func main() {
 	for i:=0;i<5;i++ {
-		v:=reflect.ValueOf(a)
-
-		fmt.Println(v)
+		time.Sleep(time.Millisecond * 1000)
+		fmt.Println("from hello")
 	}
 }
 

@@ -8,10 +8,8 @@ import (
 
 func main() {
 	service := ":5000"
-	udpAddr, err := net.ResolveUDPAddr("udp4", service)
-	checkErr(err)
-	conn, err := net.ListenUDP("udp", udpAddr)
-	checkErr(err)
+	udpAddr, _ := net.ResolveUDPAddr("udp4", service)
+	conn, _ := net.ListenUDP("udp", udpAddr)
 	for {
 		handleClient(conn)
 	}

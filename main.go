@@ -1,106 +1,80 @@
 package main
 
-import (
-	//	"time"
-	//	"DynamicKey5"
+import(
 	"fmt"
-	"runtime"
-	"sync"
-	"time"
-	"github.com/sajari/word2vec"
-	"log"
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
+	"ddz"
 )
-
-var (
-	count int32
-	wg    sync.WaitGroup
-	mutex sync.Mutex
-)
-
-func main() {
-	c := word2vec.Client{Addr: "localhost:1234"}
-
-	// Create an expression.
-	expr := word2vec.Expr{}
-	expr.Add(1, "PC")
-	//expr.Add(1, "crap")
-	//expr.Add(1, "woman")
-
-	// Find the most similar result by cosine similarity.
-	matches, err := c.CosN(expr, 10)
+var ip string ="47.75.241.11:50001"//"0.0.0.0:50001"
+func GrpcClient_Robot(){
+	conn, err := grpc.Dial(ip, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("error evaluating cosine similarity: %v", err)
-	}else {
-		for i,v:=range matches{
-			fmt.Println(i,v)
-		}
+		fmt.Println("did not connect :", err.Error())
+	}else{
+		fmt.Println("connect succ:"+conn.Target())
+	}
+	defer conn.Close()
+	c :=ddz.NewRobotServiceClient(conn)
+	lordCard := []byte{0x33,0x45,0x28,0x29,0x49,0x39}
+	farmer1Card := []byte{0x23,0x13,0x43,0x46,0x26}
+	farmer2Card := []byte{0x44,0x34,0x14}
+
+	lastCards:=[]byte{0x1e,0x13,0x23,0x33,}
+	r, err := c.Play(context.Background(), &ddz.RobotRequest{
+		Playeridentity: 0,
+		LordHandcard:lordCard,
+		Farmer1Handcard:farmer1Card,
+		Farmer2Handcard: farmer2Card,
+		LastIdentity:2,
+		LastPlaycard:lastCards,
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Printf("%+x", r.Handcard)
 	}
 }
-func mut() {
-	wg.Add(2)
-	go incCount()
-	go incCount()
-	wg.Wait()
-	fmt.Println(count)
-}
-func incCount() {
-	defer wg.Done()
-	for i := 0; i < 4; i++ {
-		mutex.Lock()
-		value := count
-		runtime.Gosched()
-		value++
-		count = value
-		mutex.Unlock()
+func GrpcClient_DealCard(){
+	conn, err := grpc.Dial(ip, grpc.WithInsecure())
+	if err != nil {
+		fmt.Println("did not connect :", err.Error())
+	}else{
+		fmt.Println("connect succ:"+conn.Target())
+	}
+	defer conn.Close()
+	c :=ddz.NewDealCardServiceClient(conn)
+	r, err := c.GetCard(context.Background(), &ddz.DealCardRequest{Params:[]byte{0,2}})
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(r.Player0,r.Player1,r.Player2,r.Extra)
 	}
 }
+func GrpcClient_Trustship(){
+	conn, err := grpc.Dial(ip, grpc.WithInsecure())
+	if err != nil {
+		fmt.Println("did not connect :", err.Error())
+	}else{
+		fmt.Println("connect succ:"+conn.Target())
+	}
+	defer conn.Close()
+	c :=ddz.NewTrustshipServiceClient(conn)
 
-func chann() {
-	ch := make(chan int)
-	go func() {
-		var sum int = 0
-		for i := 0; i < 10; i++ {
-			sum += i
-		}
-		ch <- sum
-		time.Sleep(time.Second)
-		fmt.Println("Im before the <-ch")
-	}()
-
-	fmt.Println(<-ch)
-	fmt.Println("Im after the <-ch")
-	time.Sleep(time.Second*2)
+	r, err := c.Ship(context.Background(), &ddz.TrustShipRequest{
+		PlayerIdentity: 1,
+		PlayerHandcard: []byte{0x44,0x34,0x14},
+		LastIdentity: 2,
+		LastPlaycard: []byte{0x1e,0x1e,0x13,0x23,0x33,},
+	})
+	if err != nil {
+		fmt.Println(err.Error())
+	} else {
+		fmt.Println(r.Handcard)
+	}
 }
-
-//two rely on the channel one's value,so wait until channel one finish the execution,even the one channel start after one second sleep
-//channel could auto wait the other channel that need to be finished
-//if the channel has been <- channelName ,then you can't use select or execute <- channelName again
-func channw() {
-	one := make(chan int)
-	two := make(chan int)
-	three := make(chan int)
-	go func() {
-		v := <-one //这会导致直接等待one执行后才会调用select ，导致 three 也执行完了 ，然后 输出的结果就是1000
-		two <- v   //只要two一旦被赋值 就会立马执行最后面的输出语句
-		select {
-		case x0 := <-one:
-			two <- x0
-		case x1 := <-three://会走到这里是因为three 还没有被取出过值，而one前面已经被取出来
-			two <- x1
-			two<-10000
-		}
-
-	}()
-	go func() {
-		time.Sleep(time.Second * 5)
-		one <- 5000
-	}()
-	go func() {
-		time.Sleep(time.Second * 2)
-		three <- 2000
-	}()
-	fmt.Println("got two", <-two) // 输出5000，是第一个channel 赋值传过来的数值
-	fmt.Println("got two", <-two) //输出2000，是第二个select执行第二地赋值传过来的数值
-	//fmt.Println ("got two",<-two)//err,all groutines are asleep,因为two的channel只被赋值过两次，第二次已经被取出来了
-	//如果上面的two再进行一次channel的赋值 ，则上一条语句不会出错
+func main(){
+	GrpcClient_DealCard()
+	GrpcClient_Trustship()
+	GrpcClient_Robot()
 }
