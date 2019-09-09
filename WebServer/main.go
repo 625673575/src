@@ -1,6 +1,7 @@
 package main
 
 import (
+	"WebServer/handle"
 	"bufio"
 	"crypto/md5"
 	"fmt"
@@ -148,12 +149,13 @@ func linuxShHandlerMaker(arg string) func(w http.ResponseWriter, r *http.Request
 		fmt.Println(s)
 	}
 }
-
 func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/upload", uploadHandler)
 	mux.HandleFunc("/login", loginHandler)
+	mux.HandleFunc("/playground",handle.PlayGroundHandler)
 	mux.HandleFunc("/ps", linuxShHandlerMaker("ps -A"))
+	mux.HandleFunc("/psgrep", linuxShHandlerMaker("ps -ef|grep ddz_server"))
 	mux.HandleFunc("/", echoHandler)
 	http.ListenAndServe("localhost:4000", mux)
 	//http.ListenAndServe("localhost:4001", http.FileServer(http.Dir(".")))
