@@ -12,6 +12,7 @@ service TrustshipService{
 
 service RobotService{
   rpc Play(RobotRequest) returns(PlayReply) {}
+  rpc CardAnalysis(HandCardAnalysisRequest)returns(HandCardAnalysisReply){}
 }
 service GameTableService{
   rpc Play(RobotRequest) returns(GameTableReply) {}
@@ -81,4 +82,26 @@ message DealCardReply {
   bytes player1 = 2;
   bytes player2 = 3;
   bytes extra = 4;
+}
+
+message HandCardRequest{
+  bytes cards = 1;
+}
+
+message HandCardAnalysisRequest{
+  repeated HandCardRequest handcards=1;
+}
+
+message HandCardAnalysisResult{
+  int32 power = 1;
+  int32 min_step = 2;
+  int32 min_step_without_boom=3;
+  bytes singles = 4;
+  bytes doubles = 5;
+  bytes triples = 6;
+  repeated CardStyle all_style = 7;
+}
+
+message HandCardAnalysisReply{
+  repeated HandCardAnalysisResult results = 1;
 }
