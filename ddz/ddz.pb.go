@@ -4,8 +4,12 @@
 package ddz
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -887,4 +891,336 @@ var fileDescriptor_329728c9c8fc6b4b = []byte{
 	0xd6, 0xc2, 0xd5, 0xaa, 0x8b, 0x39, 0xdf, 0x5c, 0xcc, 0x8f, 0xcb, 0xb7, 0x89, 0xca, 0x32, 0xca,
 	0x88, 0xbf, 0x18, 0x7f, 0x7e, 0x0d, 0x00, 0x00, 0xff, 0xff, 0xfc, 0x0f, 0x73, 0xee, 0x6f, 0x08,
 	0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion4
+
+// DealCardServiceClient is the client API for DealCardService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type DealCardServiceClient interface {
+	GetCard(ctx context.Context, in *DealCardRequest, opts ...grpc.CallOption) (*DealCardReply, error)
+}
+
+type dealCardServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewDealCardServiceClient(cc *grpc.ClientConn) DealCardServiceClient {
+	return &dealCardServiceClient{cc}
+}
+
+func (c *dealCardServiceClient) GetCard(ctx context.Context, in *DealCardRequest, opts ...grpc.CallOption) (*DealCardReply, error) {
+	out := new(DealCardReply)
+	err := c.cc.Invoke(ctx, "/ddz.DealCardService/GetCard", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DealCardServiceServer is the server API for DealCardService service.
+type DealCardServiceServer interface {
+	GetCard(context.Context, *DealCardRequest) (*DealCardReply, error)
+}
+
+// UnimplementedDealCardServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedDealCardServiceServer struct {
+}
+
+func (*UnimplementedDealCardServiceServer) GetCard(ctx context.Context, req *DealCardRequest) (*DealCardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCard not implemented")
+}
+
+func RegisterDealCardServiceServer(s *grpc.Server, srv DealCardServiceServer) {
+	s.RegisterService(&_DealCardService_serviceDesc, srv)
+}
+
+func _DealCardService_GetCard_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DealCardRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DealCardServiceServer).GetCard(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ddz.DealCardService/GetCard",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DealCardServiceServer).GetCard(ctx, req.(*DealCardRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _DealCardService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ddz.DealCardService",
+	HandlerType: (*DealCardServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetCard",
+			Handler:    _DealCardService_GetCard_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "ddz.proto",
+}
+
+// TrustshipServiceClient is the client API for TrustshipService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type TrustshipServiceClient interface {
+	Ship(ctx context.Context, in *TrustShipRequest, opts ...grpc.CallOption) (*PlayReply, error)
+}
+
+type trustshipServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewTrustshipServiceClient(cc *grpc.ClientConn) TrustshipServiceClient {
+	return &trustshipServiceClient{cc}
+}
+
+func (c *trustshipServiceClient) Ship(ctx context.Context, in *TrustShipRequest, opts ...grpc.CallOption) (*PlayReply, error) {
+	out := new(PlayReply)
+	err := c.cc.Invoke(ctx, "/ddz.TrustshipService/Ship", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// TrustshipServiceServer is the server API for TrustshipService service.
+type TrustshipServiceServer interface {
+	Ship(context.Context, *TrustShipRequest) (*PlayReply, error)
+}
+
+// UnimplementedTrustshipServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedTrustshipServiceServer struct {
+}
+
+func (*UnimplementedTrustshipServiceServer) Ship(ctx context.Context, req *TrustShipRequest) (*PlayReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Ship not implemented")
+}
+
+func RegisterTrustshipServiceServer(s *grpc.Server, srv TrustshipServiceServer) {
+	s.RegisterService(&_TrustshipService_serviceDesc, srv)
+}
+
+func _TrustshipService_Ship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TrustShipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TrustshipServiceServer).Ship(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ddz.TrustshipService/Ship",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TrustshipServiceServer).Ship(ctx, req.(*TrustShipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _TrustshipService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ddz.TrustshipService",
+	HandlerType: (*TrustshipServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Ship",
+			Handler:    _TrustshipService_Ship_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "ddz.proto",
+}
+
+// RobotServiceClient is the client API for RobotService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type RobotServiceClient interface {
+	Play(ctx context.Context, in *RobotRequest, opts ...grpc.CallOption) (*PlayReply, error)
+	CardAnalysis(ctx context.Context, in *HandCardAnalysisRequest, opts ...grpc.CallOption) (*HandCardAnalysisReply, error)
+}
+
+type robotServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewRobotServiceClient(cc *grpc.ClientConn) RobotServiceClient {
+	return &robotServiceClient{cc}
+}
+
+func (c *robotServiceClient) Play(ctx context.Context, in *RobotRequest, opts ...grpc.CallOption) (*PlayReply, error) {
+	out := new(PlayReply)
+	err := c.cc.Invoke(ctx, "/ddz.RobotService/Play", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *robotServiceClient) CardAnalysis(ctx context.Context, in *HandCardAnalysisRequest, opts ...grpc.CallOption) (*HandCardAnalysisReply, error) {
+	out := new(HandCardAnalysisReply)
+	err := c.cc.Invoke(ctx, "/ddz.RobotService/CardAnalysis", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RobotServiceServer is the server API for RobotService service.
+type RobotServiceServer interface {
+	Play(context.Context, *RobotRequest) (*PlayReply, error)
+	CardAnalysis(context.Context, *HandCardAnalysisRequest) (*HandCardAnalysisReply, error)
+}
+
+// UnimplementedRobotServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedRobotServiceServer struct {
+}
+
+func (*UnimplementedRobotServiceServer) Play(ctx context.Context, req *RobotRequest) (*PlayReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Play not implemented")
+}
+func (*UnimplementedRobotServiceServer) CardAnalysis(ctx context.Context, req *HandCardAnalysisRequest) (*HandCardAnalysisReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CardAnalysis not implemented")
+}
+
+func RegisterRobotServiceServer(s *grpc.Server, srv RobotServiceServer) {
+	s.RegisterService(&_RobotService_serviceDesc, srv)
+}
+
+func _RobotService_Play_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RobotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RobotServiceServer).Play(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ddz.RobotService/Play",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RobotServiceServer).Play(ctx, req.(*RobotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _RobotService_CardAnalysis_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HandCardAnalysisRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RobotServiceServer).CardAnalysis(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ddz.RobotService/CardAnalysis",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RobotServiceServer).CardAnalysis(ctx, req.(*HandCardAnalysisRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _RobotService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ddz.RobotService",
+	HandlerType: (*RobotServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Play",
+			Handler:    _RobotService_Play_Handler,
+		},
+		{
+			MethodName: "CardAnalysis",
+			Handler:    _RobotService_CardAnalysis_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "ddz.proto",
+}
+
+// GameTableServiceClient is the client API for GameTableService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type GameTableServiceClient interface {
+	Play(ctx context.Context, in *RobotRequest, opts ...grpc.CallOption) (*GameTableReply, error)
+}
+
+type gameTableServiceClient struct {
+	cc *grpc.ClientConn
+}
+
+func NewGameTableServiceClient(cc *grpc.ClientConn) GameTableServiceClient {
+	return &gameTableServiceClient{cc}
+}
+
+func (c *gameTableServiceClient) Play(ctx context.Context, in *RobotRequest, opts ...grpc.CallOption) (*GameTableReply, error) {
+	out := new(GameTableReply)
+	err := c.cc.Invoke(ctx, "/ddz.GameTableService/Play", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// GameTableServiceServer is the server API for GameTableService service.
+type GameTableServiceServer interface {
+	Play(context.Context, *RobotRequest) (*GameTableReply, error)
+}
+
+// UnimplementedGameTableServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedGameTableServiceServer struct {
+}
+
+func (*UnimplementedGameTableServiceServer) Play(ctx context.Context, req *RobotRequest) (*GameTableReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Play not implemented")
+}
+
+func RegisterGameTableServiceServer(s *grpc.Server, srv GameTableServiceServer) {
+	s.RegisterService(&_GameTableService_serviceDesc, srv)
+}
+
+func _GameTableService_Play_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RobotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GameTableServiceServer).Play(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ddz.GameTableService/Play",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GameTableServiceServer).Play(ctx, req.(*RobotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _GameTableService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "ddz.GameTableService",
+	HandlerType: (*GameTableServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Play",
+			Handler:    _GameTableService_Play_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "ddz.proto",
 }

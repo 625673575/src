@@ -1,19 +1,19 @@
 package main
 
 import (
-	"net/http"
-	"io"
-	"fmt"
-	"strings"
-	"html/template"
-	"log"
-	"time"
-	"crypto/md5"
-	"strconv"
-	"os"
-	"path/filepath"
-	"os/exec"
 	"bufio"
+	"crypto/md5"
+	"fmt"
+	"html/template"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strconv"
+	"strings"
+	"time"
 )
 
 type Hello struct {
@@ -34,9 +34,7 @@ var count int = 1
 func (Hello) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, "hello, world!\n")
 }
-func helloHandler(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "liu!\n")
-}
+
 func echoHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()       //解析参数，默认是不会解析的
 	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
@@ -66,19 +64,19 @@ func execCmdGoRun(fileName string, w http.ResponseWriter) {
 	cmd := exec.Command("go", "run", fileName)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
-		fmt.Println("error occur",err)
+		fmt.Println("error occur", err)
 	}
 	cmd.Start()
-	reader := bufio.NewReader(stdout)
 	//实时循环读取输出流中的一行内容
-		for {
-			line, err2 := reader.ReadString('\n')
-			if err2 != nil || io.EOF == err2 {
-				break
-			}
-			fmt.Println(line)
-			io.WriteString(w, line)
+	for {
+		reader := bufio.NewReader(stdout)
+		line, err2 := reader.ReadString('\n')
+		if err2 != nil || io.EOF == err2 {
+			break
 		}
+		fmt.Println(line)
+		io.WriteString(w, line)
+	}
 	cmd.Wait()
 }
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -97,7 +95,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		defer execCmdGoRun(path, w)
 	}
 }
-func upload(w http.ResponseWriter, r *http.Request) {
+func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //获取请求的方法
 	if r.Method == "GET" {
 		crutime := time.Now().Unix()
@@ -105,7 +103,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(h, strconv.FormatInt(crutime, 10))
 		token := fmt.Sprintf("%x", h.Sum(nil))
 
-		t, _ := template.ParseFiles("WebServer/upload.html")
+		t, _ := template.ParseFiles("WebServer/uploadHandler.html")
 		t.Execute(w, token)
 	} else {
 		r.ParseMultipartForm(32 << 20)
@@ -125,16 +123,38 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		io.Copy(f, file)
 	}
 }
-func init() {
-	println("__int")
+
+func windowsShHandlerMaker(cmd string, arg ...string) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cmd := exec.Command(cmd, arg...)
+		out, err := cmd.Output()
+		s := string(out)
+		if err != nil {
+			s = err.Error()
+		}
+		io.WriteString(w, s)
+		fmt.Println(s)
+	}
 }
+func linuxShHandlerMaker(arg string) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cmd := exec.Command("/bin/sh", "-c", arg)
+		out, err := cmd.Output()
+		s := string(out)
+		if err != nil {
+			s = err.Error()
+		}
+		io.WriteString(w, s)
+		fmt.Println(s)
+	}
+}
+
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/upload", upload)
+	mux.HandleFunc("/upload", uploadHandler)
 	mux.HandleFunc("/login", loginHandler)
-	mux.HandleFunc("/hello", helloHandler)
+	mux.HandleFunc("/ps", linuxShHandlerMaker("ps -A"))
 	mux.HandleFunc("/", echoHandler)
-
 	http.ListenAndServe("localhost:4000", mux)
-	// http.ListenAndServe("localhost:4000", http.FileServer(http.Dir(".")))
+	//http.ListenAndServe("localhost:4001", http.FileServer(http.Dir(".")))
 }
