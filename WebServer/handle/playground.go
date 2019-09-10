@@ -14,7 +14,7 @@ import (
 var IDENTITY=map[string]int32{"Lord":0,"Farmer1":1,"Farmer2":2}
 func PlayGroundHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("WebServer/play.html")
+		t, _ := template.ParseFiles("static/play.html")
 		log.Println(t.Execute(w, nil))
 	} else {
 		ip := r.FormValue("ip")

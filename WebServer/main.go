@@ -16,10 +16,6 @@ import (
 	"strings"
 	"time"
 )
-
-type Hello struct {
-	text string
-}
 type BaseJsonBean struct {
 	Code    int         `json:"code"`
 	Data    interface{} `json:"data"`
@@ -30,27 +26,8 @@ func NewBaseJsonBean() *BaseJsonBean {
 	return &BaseJsonBean{}
 }
 
-var count int = 1
+var count = 1
 
-func (Hello) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	io.WriteString(w, "hello, world!\n")
-}
-
-func echoHandler(w http.ResponseWriter, r *http.Request) {
-	r.ParseForm()       //解析参数，默认是不会解析的
-	fmt.Println(r.Form) //这些信息是输出到服务器端的打印信息
-	fmt.Println("path", r.URL.Path)
-	fmt.Println("scheme", r.URL.Scheme)
-	fmt.Println(r.Form["url_long"])
-	for k, v := range r.Form {
-		fmt.Println("key:", k)
-
-		fmt.Println("val:", strings.Join(v, ""))
-	}
-	wr, _ := template.ParseFiles("WebServer/login.html")
-	wr.Execute(w, nil)
-
-}
 func writeFile(fileName string, content string) {
 	dstFile, err := os.Create(fileName)
 	if err != nil {
@@ -80,10 +57,11 @@ func execCmdGoRun(fileName string, w http.ResponseWriter) {
 	}
 	cmd.Wait()
 }
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //获取请求的方法
 	if r.Method == "GET" {
-		t, _ := template.ParseFiles("WebServer/login.html")
+		t, _ := template.ParseFiles("static/login.html")
 		log.Println(t.Execute(w, nil))
 	} else {
 		username := r.FormValue("username")
@@ -104,7 +82,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(h, strconv.FormatInt(crutime, 10))
 		token := fmt.Sprintf("%x", h.Sum(nil))
 
-		t, _ := template.ParseFiles("WebServer/uploadHandler.html")
+		t, _ := template.ParseFiles("static/uploadHandler.html")
 		t.Execute(w, token)
 	} else {
 		r.ParseMultipartForm(32 << 20)
@@ -156,7 +134,8 @@ func main() {
 	mux.HandleFunc("/playground",handle.PlayGroundHandler)
 	mux.HandleFunc("/ps", linuxShHandlerMaker("ps -A"))
 	mux.HandleFunc("/psgrep", linuxShHandlerMaker("ps -ef|grep ddz_server"))
-	mux.HandleFunc("/", echoHandler)
+	mux.HandleFunc("/index", handle.IndexHandler)
+	mux.HandleFunc("/message", handle.MessageHandler)
+	mux.Handle("/",http.FileServer(http.Dir("./static")))
 	http.ListenAndServe("localhost:4000", mux)
-	//http.ListenAndServe("localhost:4001", http.FileServer(http.Dir(".")))
 }

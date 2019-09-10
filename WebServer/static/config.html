@@ -1,0 +1,42 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<form action="/play" method="post">
+<datalist id = identity>
+   <option> Lord
+   <option> Farmer1
+   <option> Farmer2
+</datalist>
+<datalist id = hex>
+   <option value = "10进制"> 
+   <option value = "16进制"> 
+</datalist>
+
+    IP:<input type="text" name="ip" value="47.75.241.11:50001">
+    InputType:
+<select name="input_type">
+  <option>16进制</option>
+  <option>10进制</option>
+</select>
+    <br>Lord:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" type="text" name="l" size=50>
+    <br>Farmer1:<input type="text" name="f1" size=50>
+    <br>Farmer2:<input type="text" name="f2" size=50>
+    <br>Last:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="last" size=50>
+    <br>Player Identity:
+<select name="player_identity">
+  <option>Lord</option>
+  <option>Farmer1</option>
+  <option>Farmer2</option>
+</select>
+    Last Identity:
+<select name="last_identity">
+  <option>Lord</option>
+  <option>Farmer1</option>
+  <option>Farmer2</option>
+</select>
+    <br><input type="submit" value="Play">
+</form>
+</body>
+</html>
