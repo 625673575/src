@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-  <head>
+<head>
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -34,172 +34,199 @@
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-  </head>
+</head>
 
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-    <div class="site-wrap" id="home-section">
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<div class="site-wrap" id="home-section">
 
-      <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu site-navbar-target">
         <div class="site-mobile-menu-header">
-          <div class="site-mobile-menu-close mt-3">
-            <span class="icon-close2 js-menu-toggle"></span>
-          </div>
+            <div class="site-mobile-menu-close mt-3">
+                <span class="icon-close2 js-menu-toggle"></span>
+            </div>
         </div>
         <div class="site-mobile-menu-body"></div>
-      </div>
-
-      <div class="ftco-blocks-cover-1">
-      <div class="ftco-cover-1 overlay" style="background-image: url('images/wallpaper.jpg')">
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="col-lg-6">
-              <h1 class="line-bottom">专业的斗地主AI<br>逼近真实玩家的操作<br>让您不再苦于初期推广</h1>
-            </div>
-            <div class="col-lg-6 ml-auto">
-              
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
-      <script>
-        function fun() {
-          alert('提交表单成功，我们会尽快与您取得联系!');
-        }
-      </script>
+    <div class="ftco-blocks-cover-1">
+        <div class="ftco-cover-1 overlay" style="background-image: url('images/wallpaper.jpg')">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h1 class="line-bottom">专业的斗地主AI<br>逼近真实玩家的操作<br>让您不再苦于初期推广</h1>
+                    </div>
+                    <div class="col-lg-6 ml-auto">
 
-    <div class="site-section">
-      <div class="container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function fun() {
+        alert('提交表单成功，我们会尽快与您取得联系!');
+    }
+</script>
+
+<div class="site-section">
+    <div class="container">
         <div class="row">
-          <div class="col-md-5 pr-md-5 mr-auto">
-            <h2 class="line-bottom">如果您是一家初创棋牌游戏公司，请联系我们</h2>
-            <p>我们的服务宗旨是让您以最小的投资得到最大的回报，降低您初期的推广风险与成本.<br>如果您急于推广您的产品，需要智能机器人陪玩，确苦于没时间来开发，请选择我们吧。</p>
-          </div>
-          <div class="col-md-6">
-            <div class="quick-contact-form bg-white">
-                <h2>留下您的联系方式</h2>
-                <form action="/message" method="post" target="myIframe">
-                  <div class="form-group">
-                    <input type="text" name="name" class="form-control" placeholder="Name">
-                  </div>
-                  <div class="form-group">
-                    <input type="email" name="email" class="form-control" placeholder="Email">
-                  </div>
-                  <div class="form-group">
-                    <textarea name="message" class="form-control" id="" cols="30" rows="5" placeholder="Message"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <input onclick="fun()" type="submit" value="发送" class="btn btn-primary px-5">
-                  </div>
-                </form>
-              <iframe id="myIframe" name="myIframe"></iframe>
+            <div class="col-md-5 pr-md-5 mr-auto">
+                <h2 class="line-bottom">如果您是一家初创棋牌游戏公司，请联系我们</h2>
+                <p>我们的服务宗旨是让您以最小的投资得到最大的回报，降低您初期的推广风险与成本.<br>如果您需要尽快上线推广您的产品，请选择我们吧。</p>
             </div>
-          </div>
+            <div class="col-md-6">
+                <div class="quick-contact-form bg-white">
+                    <h2>留下您的联系方式</h2>
+                    <form action="/message" method="post" target="myIframe">
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <textarea name="message" class="form-control" id="" cols="30" rows="5"
+                                      placeholder="Message"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <input onclick="fun()" type="submit" value="发送" class="btn btn-primary px-5">
+                        </div>
+                    </form>
+                    <iframe id="myIframe" name="myIframe" style='display: none;'></iframe>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <div class="site-section" style="background-color: #dedffe;">
-      <div class="container">
+<div class="site-section" style="background-color: #dedffe;">
+    <div class="container">
         <div class="row align-items-stretch">
-          <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
-		<a href="http://斗地主ai.com/debug">
-            <div class="service-2 h-100">
-              <div class="svg">
-                <img src="images/ddz_icon.jpg" alt="Image" class="">
-              </div>
-              <h3><span>斗地主</span></h3>
-              <p>斗地主游戏AI，像真人一样陪你玩牌</p>
+            <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
+                <a href="http://斗地主ai.com/debug">
+                    <div class="service-2 h-100">
+                        <div class="svg">
+                            <img src="images/ddz_icon.jpg" alt="Image" class="">
+                        </div>
+                        <h3><span>斗地主</span></h3>
+                        <p>斗地主游戏AI，像真人一样陪你玩牌</p>
+                    </div>
+                </a>
             </div>
-		  </a>
-          </div>
-          <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
-		<a href="https://www.baidu.com">
-            <div class="service-2 h-100">
-              <div class="svg">
-                <img src="images/majong_icon.jpg" alt="Image" class="">
-              </div>
+            <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
+                <a href="https://www.baidu.com">
+                    <div class="service-2 h-100">
+                        <div class="svg">
+                            <img src="images/majong_icon.jpg" alt="Image" class="">
+                        </div>
 
-              <h3><span>麻将</span></h3>
-              <p>各种地方麻将AI的方案订制和优化</p>
+                        <h3><span>麻将</span></h3>
+                        <p>各种地方麻将AI的方案订制和优化</p>
+                    </div>
+                </a>
             </div>
-		  </a>
-          </div>
-          <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
-            <div class="service-2 h-100">
-              <div class="svg">
-                <img src="images/post_5.jpg" alt="Image" class="">
-              </div>
+            <div class="col-md-6 mb-5 mb-lg-5 col-lg-4">
+                <div class="service-2 h-100">
+                    <div class="svg">
+                        <img src="images/post_5.jpg" alt="Image" class="">
+                    </div>
 
-              <h3><span>更多</span></h3>
-              <p>未来我们将提供更多种类的棋牌类AI</p>
+                    <h3><span>更多</span></h3>
+                    <p>未来我们将提供更多种类的棋牌类AI</p>
 
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-    <div class="site-section">
-      <div class="container">
-        
+<div class="site-section">
+    <div class="container">
+
         <div class="row mb-5">
-          <div class="col-md-4 mr-auto">
-            <h2 class="line-bottom">我们是一家专业领先的棋牌游戏AI服务公司</h2>
-          </div>
-          <div class="col-md-8 text-right">
-            <nav class="custom-tab nav" role="tablist"  class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a href="#nav-one" class="nav-item nav-link active" data-toggle="tab" role="tab"  aria-controls="nav-one" aria-selected="true">专业性</a>
-              <a href="#nav-two" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-two" aria-selected="false">稳定性</a>
-              <a href="#nav-three" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-three" aria-selected="false">伸缩性</a>
-            </nav>
-          </div>
+            <div class="col-md-4 mr-auto">
+                <h2 class="line-bottom">我们是一家专业领先的棋牌游戏AI服务公司</h2>
+            </div>
+            <div class="col-md-8 text-right">
+                <nav class="custom-tab nav" role="tablist" class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a href="#nav-one" class="nav-item nav-link active" data-toggle="tab" role="tab"
+                       aria-controls="nav-one" aria-selected="true">专业性</a>
+                    <a href="#nav-two" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-two"
+                       aria-selected="false">稳定性</a>
+                    <a href="#nav-three" class="nav-item nav-link" data-toggle="tab" role="tab"
+                       aria-controls="nav-three" aria-selected="false">伸缩性</a>
+                </nav>
+            </div>
         </div>
 
         <div class="row">
-          <div class="col-12">
-            <div class="tab-content" id="nav-tabContent">
-              <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img src="images/bot.png" alt="Image" class="img-fluid">
-                  </div>
-                  <div class="col-md-4 ml-auto">
-                    <h2 class="line-bottom">专业性</h2>
-                    <p>长期的方案支撑积累，让我们的服务品质处于领先优势.</p>
-                  </div>
+            <div class="col-12">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <img src="images/bot.png" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <h2 class="line-bottom">专业性</h2>
+                                <p>长期的技术积累，让我们的服务品质处于领先优势，我们会提供免费服务直到取到您的认可.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <img src="images/vt-post-systemsR2.jpg" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <h2 class="line-bottom">稳定性</h2>
+                                <p>久经考验，大量案例，让我们的服务稳定高效，长期运行不宕机，您不需担心可能遭受的攻击和损失.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-three" role="tabpanel" aria-labelledby="nav-three-tab">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <img src="images/twitter-card.png" alt="Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <h2 class="line-bottom">伸缩性</h2>
+                                <p>易于配置的后台，可以灵活的添加删除更改服务!</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="tab-pane fade" id="nav-two" role="tabpanel" aria-labelledby="nav-two-tab">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img src="images/vt-post-systemsR2.jpg" alt="Image" class="img-fluid">
-                  </div>
-                  <div class="col-md-4 ml-auto">
-                    <h2 class="line-bottom">稳定性</h2>
-                    <p>久经考验，大量案例，让我们的服务稳定高效，您不需担心可能遭受的攻击和损失.</p>
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane fade" id="nav-three" role="tabpanel" aria-labelledby="nav-three-tab">
-                <div class="row">
-                  <div class="col-md-7">
-                    <img src="images/twitter-card.png" alt="Image" class="img-fluid">
-                  </div>
-                  <div class="col-md-4 ml-auto">
-                    <h2 class="line-bottom">伸缩性</h2>
-                    <p>易于配置的后台，可以灵活的添加删除更改服务!</p>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
+</div>
 
-  </body>
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="footer-heading mb-4 text-center">联系我们</h2>
+                <p class="text-center">技术合作 通讯号码:+86 16675588662 &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 电子邮件:hifior@foxmail.com</p>
+            </div>
+        </div>
+        <div class="row pt-3 mt-3 text-center">
+            <div class="col-md-12">
+                <div class="border-top pt-2">
+                    <p>
+                        Copyright &copy;<script>document.write(new Date().getFullYear());</script> 斗地主AI.com All rights reserved
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </footer>
+
+</div>
+</body>
 
 </html>
 
